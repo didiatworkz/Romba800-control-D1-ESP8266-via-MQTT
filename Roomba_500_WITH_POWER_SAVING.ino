@@ -39,6 +39,7 @@ boolean connectioWasAlive = true;
 //Function to connect to WIFI first time
 void setup_wifi() 
 {
+// WiFi.hostname(mqtt_client_name);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) 
   {
