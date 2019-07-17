@@ -8,3 +8,45 @@ MODIFIED VERSION TO FIX 2 PROBLEMS:
 An arduino program to add MQTT commands to your roomba 500 or 600 series.
 
 https://www.youtube.com/watch?v=t2NgA8qYcFI
+
+
+Arduino Sketch:
+https://github.com/thehookup/MQTT-Roo...
+
+Required Arduino Libraries:
+http://www.airspayce.com/mikem/arduin...
+https://github.com/jfturcot/SimpleTimer
+https://github.com/knolleary/pubsubcl...
+
+Configuration.yaml Additions:
+https://github.com/thehookup/MQTT-Roo...
+
+customize.yaml Additions:
+https://github.com/thehookup/MQTT-Roo...
+
+NodeRED Flows:
+https://github.com/thehookup/MQTT-Roo...
+*REMEMBER TO CHANGE HOSTNAME OF MQTT SERVER
+
+NodeRED scheduling node:
+https://www.npmjs.com/package/node-re...
+
+Wiring Schematic:
+https://github.com/thehookup/MQTT-Roo...
+
+Parts:
+ESP-01: https://amzn.to/2qVB2p8
+PNP Transistors: https://amzn.to/2FaUfrS
+Buck Converters: https://amzn.to/2K7FY33
+
+Roomba upgrades:
+Lithium Battery: https://amzn.to/2JnbGbp
+Brush Upgrades: https://amzn.to/2qVDTOB
+
+Tools:
+Soldering Iron: https://amzn.to/2JUP3Mm
+USB to TTL Adapter: https://amzn.to/2Hak9BW
+
+Roomba OI Document:
+http://cfpm.org/~peter/bfz/iRobot_Roo...
+
