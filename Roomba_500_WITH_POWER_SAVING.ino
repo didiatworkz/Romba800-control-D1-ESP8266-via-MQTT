@@ -48,6 +48,7 @@ void setup_wifi()
 }
 
 //verbose function to monitor WIFI connection in loop function, it not connected to WIFI; you can also use simpler setup_wifi() function
+// DON'T USE IT IF YOU HAVE'T HW WIFI PROBLEM ON ESP01
 void monitorWiFi()
 {
   if (WiFi.status() != WL_CONNECTED)
@@ -261,7 +262,7 @@ if (!client.connected())
   client.loop();
   timer.run();
 
-//monitor WIFI connection
+//monitor WIFI connection DON'T USE IT IF YOU HAVE'T HW WIFI PROBLEM ON ESP01
 //  monitorWiFi();
-  setup_wifi(); 
+//  setup_wifi(); 
 }
