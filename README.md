@@ -1,7 +1,7 @@
 # ESP-01_Roomba
 
 MODIFIED VERSION TO FIX 2 PROBLEMS:
-- WIFI reconnection problem
+- WIFI reconnection problem (please check first your hardware, some ESP01 have serious problem with WIFI);
 - Wake UP Roomba 500 with lastest firmware 3.8.2 which introduce POWER SAVING MODE (the same present in all newst series as 600, 700, 900); this could be a problem to comand Roomba via ESP when Roomba is sleeping...
 
 
