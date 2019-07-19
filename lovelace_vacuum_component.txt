@@ -1,0 +1,23 @@
+BOZZA
+
+entities:
+  - entity: sensor.roomba_battery????
+  - entity: sensor.roomba_status????
+  - entity: switch.roomba????
+    icon: 'mdi:robot-vacuum'?????
+show_header_toggle: false
+title: Roomba P1
+type: entities
+
+@@@@@@@@
+mqtt
+    name: "Roomba"
+    supported_features:
+      - turn_on
+      - return_home
+      - battery
+      - status
+    command_topic: "roomba/command"
+    battery_level_topic: "roomba/battery"
+    charging_topic: "roomba/charging"
+    cleaning_topic: "roomba/status"
