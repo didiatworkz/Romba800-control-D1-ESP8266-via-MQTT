@@ -38,7 +38,7 @@ https://github.com/thehookup/MQTT-Roo...
 Parts:
 ESP-01: https://amzn.to/2qVB2p8
 PNP Transistors: https://amzn.to/2FaUfrS
-Buck Converters: https://amzn.to/2K7FY33
+Buck Converters: https://amzn.to/2K7FY33 (choice high quality DC-DC buck converter because power supply of Roomba is very unstable and it can burst resistor of your buck converter)
 
 Roomba upgrades:
 Lithium Battery: https://amzn.to/2JnbGbp
