@@ -51,3 +51,10 @@ USB to TTL Adapter: https://amzn.to/2Hak9BW
 Roomba OI Document:
 http://cfpm.org/~peter/bfz/iRobot_Roo...
 
+HOWTO TO PROCEED:
+1) FIRST, BE SURE POWER SUPLY OF DC DC BUCK CONVERTER HAVE GOOD QUALITY AND OUTPUT IS AT 3,2V
+2) SECOND, BE SURE WIRING ARE OK!
+3) TEST YOUR FIRMWARE
+
+
+If you have more Roomba to control, you have to change Roomba MQTT name in definition lines of the ESP firmware and in switch name of configuration.yaml file.
