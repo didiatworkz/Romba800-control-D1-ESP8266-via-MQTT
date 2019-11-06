@@ -1,7 +1,8 @@
 entities:
+  - entity: switch.roomba
+    icon: 'mdi:robot-vacuum'
   - entity: sensor.roomba_battery
   - entity: sensor.roomba_status
-  - entity: switch.roomba
     icon: 'mdi:robot-vacuum'
 show_header_toggle: false
 title: Roomba Primo Piano
