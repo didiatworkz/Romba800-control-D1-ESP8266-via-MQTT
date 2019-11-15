@@ -21,6 +21,7 @@ PubSubClient client(espClient);
 SimpleTimer timer;
 Roomba roomba(&Serial, Roomba::Baud115200);
 
+//define GPIO 0 on ESP01, please change it you need use other ESP modules
 #define noSleepPin 0
 
 // Variables
