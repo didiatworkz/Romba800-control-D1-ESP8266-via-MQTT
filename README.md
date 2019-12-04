@@ -58,3 +58,7 @@ HOWTO TO PROCEED:
 
 
 If you have more Roomba to control, you have to change Roomba MQTT name in definition lines of the ESP firmware and in switch name of configuration.yaml file.
+
+## Troubleshooting
+
+Between each configuration/connection I suggest to do a factory default reset to be sure the roomba isn't in a strange/wrong state (ex. safe mode): you can do it please press and Hold the Dock and Spot button down for 10 seconds then release. I notice a strange state where to wake up and start to clean I have to press clean button for 3 or 4 times; after reset procedure all work fine and Roomba seem to wake up fine! This problem can prevent to start scheduled cleaning!
