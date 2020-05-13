@@ -52,8 +52,8 @@ Roomba OI Document:
 http://cfpm.org/~peter/bfz/iRobot_Roo...
 
 HOWTO TO PROCEED:
-1) FIRST, BE SURE POWER SUPLY OF DC DC BUCK CONVERTER HAVE GOOD QUALITY AND OUTPUT IS AT 3,2V
-2) SECOND, BE SURE WIRING ARE OK!
+1) FIRST, BE SURE POWER SUPPLY OF DC DC BUCK CONVERTER HAVE GOOD QUALITY AND OUTPUT IS AT 3,2V;
+2) SECOND, BE SURE WIRING ARE OK (please see attached photos)!
 3) TEST YOUR FIRMWARE
 
 
@@ -62,3 +62,5 @@ If you have more Roomba to control, you have to change Roomba MQTT name in defin
 ## Troubleshooting
 
 Between each configuration/connection I suggest to do a factory default reset to be sure the roomba isn't in a strange/wrong state (ex. safe mode): you can do it please press and Hold the Dock and Spot button down for 10 seconds then release. I notice a strange state where to wake up and start to clean I have to press clean button for 3 or 4 times; after reset procedure all work fine and Roomba seem to wake up fine! This problem can prevent to start scheduled cleaning!
+
+Many china products broke itself very soon (ex. buck converter), verify input/outpout voltage!
