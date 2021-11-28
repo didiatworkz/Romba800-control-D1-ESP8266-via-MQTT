@@ -36,11 +36,13 @@ https://git.io/JMWYH
 
 #### Choose the D1mini board
 1) Choose *Tools+ -> *Boards* -> *ESP8266 Boards (..)* -> *LOLIN(WEMOS) D1 R2 & mini*
+
 ![choose_boards](https://github.com/didiatworkz/Romba800-control-D1-ESP8266-via-MQTT/raw/master/.github/choose_board.png)
 
 #### Check settings and set Port
 1) Choose *Tools+ -> *Port* -> *COM x* to select the right COM Port on your PC
 2) The settings should be the same as in the image:
+
 ![check_settings](https://github.com/didiatworkz/Romba800-control-D1-ESP8266-via-MQTT/raw/master/.github/check_settings.png)
 
 ---
