@@ -13,11 +13,11 @@ In addition, improvements and enhancements were implemented, so that not everyon
 
 ### Parts
 + D1mini: https://amzn.to/2OStB1A
-+ PNP Transistors: https://amzn.to/312FY1A
-+ Buck Converters: https://amzn.to/32uC3uy *(choice high quality DC-DC buck converter because power supply of Roomba is very unstable and it can burst resistor of your buck converter)*
++ PNP Transistors 2N3906: https://amzn.to/312FY1A
++ Buck Converters 24V -> 3V: https://amzn.to/32uC3uy *(choice high quality DC-DC buck converter because power supply of Roomba is very unstable and it can burst resistor of your buck converter)*
 
 ### Tools
-+ Soldering Iron: https://amzn.to/2JUP3Mm
++ Soldering Iron
 + Some cables
 
 ### Libraries
