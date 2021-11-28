@@ -1,0 +1,57 @@
+type: vertical-stack
+cards:
+  - type: custom:button-card
+    name: Roomba
+    color_type: card
+    entity: binary_sensor.roomba_charching
+    tap_action:
+      action: call-service
+      service: mqtt.publish
+      service_data:
+        topic: roomba/commands
+        payload: status
+    state:
+      - value: 'on'
+        name: Roomba
+        color: rgb(255,217,0)
+        styles:
+          icon:
+            - display: none
+      - value: 'off'
+        name: Roomba
+        color: rgb(25,25,25)
+        styles:
+          icon:
+            - display: none
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        name: Start
+        color: rgb(52,191,73)
+        icon: mdi:robot-vacuum
+        tap_action:
+          action: call-service
+          service: mqtt.publish
+          service_data:
+            topic: roomba/commands
+            payload: start
+        hold_action:
+          action: call-service
+          service: mqtt.publish
+          service_data:
+            topic: roomba/commands
+            payload: stop
+      - type: custom:button-card
+        name: Home
+        color: rgb(128, 128, 128)
+        icon: mdi:home
+        tap_action:
+          action: call-service
+          service: mqtt.publish
+          service_data:
+            topic: roomba/commands
+            payload: home
+  - type: entities
+    entities:
+      - entity: sensor.roomba_battery
+      - entity: sensor.roomba_status
