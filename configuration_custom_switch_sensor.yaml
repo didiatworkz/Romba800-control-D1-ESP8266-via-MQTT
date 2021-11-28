@@ -9,7 +9,7 @@ sensor:
 #Roomba Sensors
   - platform: mqtt
     name: "Roomba Status"
-    state_topic: "roomba/currentStatus"
+    state_topic: "roomba/status"
   - platform: mqtt
     name: "Roomba Battery"
     state_topic: "roomba/battery"
