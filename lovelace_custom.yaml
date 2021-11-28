@@ -1,0 +1,9 @@
+entities:
+  - entity: switch.roomba
+    icon: 'mdi:robot-vacuum'
+  - entity: sensor.roomba_battery
+  - entity: sensor.roomba_status
+    icon: 'mdi:information-outline'
+show_header_toggle: false
+title: Roomba
+type: entities
