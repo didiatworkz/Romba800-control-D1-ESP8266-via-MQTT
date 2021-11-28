@@ -12,7 +12,7 @@ In addition, improvements and enhancements were implemented, so that not everyon
 ## Preparation
 
 ### Parts
-+ D1 mini: https://amzn.to/2OStB1A
++ D1mini: https://amzn.to/2OStB1A
 + PNP Transistors: https://amzn.to/312FY1A
 + Buck Converters: https://amzn.to/32uC3uy *(choice high quality DC-DC buck converter because power supply of Roomba is very unstable and it can burst resistor of your buck converter)*
 
@@ -71,7 +71,21 @@ const char *mqtt_client_name = "Roomba";
 3) Verify code
 4) Upload code to D1mini
 
-### Home Assistant
+### Home Assistant 
+#### Setup MQTT
+1) Goto *Supervisor* -> *Add-On Store* -> *Mosquitto broker*
+2) Click on *Install*
+3) After the Add-On is installed choose the Mosquitto broker from the *Dashboard*
+4) Goto to *Configuration* tab
+5) Change ` logins: [] ` to the same credentials like in the *Roomba800.ino*
+```yaml
+logins:
+  - username: <YOUR MQTT USERNAME>
+    password: <YOUR MQTT PASSWORD>
+```
+6) Click on *Save* and *Restart Add-on*
+
+#### Add sensors / switch
 1) Copy code from *configuration_custom_switch_sensor.yaml* into your configuration.yaml - You can also spit the file if you use a separate sensor.yaml
 2) Copy code from *customize.yaml* to customize.yaml
 3) Check Configuration via *Configuration* -> *Server Control* -> *Check Configuration* and restart the Server management if configuration files are valid.
