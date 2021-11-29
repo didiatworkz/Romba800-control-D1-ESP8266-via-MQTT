@@ -76,7 +76,7 @@ void reconnect()
     }
     if(retries >= 50)
     {
-    ESP.restart();
+      ESP.restart();
     }
   }
 }
@@ -104,6 +104,10 @@ void callback(char* topic, byte* payload, unsigned int length)
     {
       sendInfoRoomba();
     }
+    if (newPayload == "find")
+    {
+      find();
+    }
 
   }
 }
@@ -112,31 +116,40 @@ void callback(char* topic, byte* payload, unsigned int length)
 void startCleaning()
 {
   awake();
-  Serial.write(128);
+  roomba.start();
   delay(50);
-  Serial.write(131);
+  roomba.saveMode();
   delay(50);
-  Serial.write(135);
+  roomba.cover();
   client.publish("roomba/status", "Cleaning");
 }
 
 void stopCleanig()
 {
-  Serial.write(128);
+  roomba.start();
   delay(50);
-  Serial.write(135);
+  roomba.cover();
   client.publish("roomba/status", "Halted");
 }
 
 void goHome()
 {
   awake();
-  Serial.write(128);
+  roomba.start();
   delay(50);
-  Serial.write(131);
+  roomba.saveMode();
   delay(50);
-  Serial.write(143);
+  roomba.coverAndDock();
   client.publish("roomba/status", "Returning");
+}
+
+void find()
+{
+  uint8_t song[] = {62, 12, 66, 12, 69, 12, 74, 36};
+  awake();
+  roomba.start();
+  roomba.song(10, song, sizeof(song));
+  roomba.playSong(10); 
 }
 
 void sendInfoRoomba()
@@ -165,10 +178,32 @@ void sendInfoRoomba()
   String temp_str = String(battery_Voltage);
   temp_str.toCharArray(battery_Current_mAh_send, temp_str.length() + 1); //packaging up the data to publish to mqtt
   client.publish("roomba/charging", battery_Current_mAh_send);
+  switch(battery_Current_mAh_send) 
+  {
+  case "5":
+    client.publish("roomba/status", "Charging Fault Condition");
+    break;
+  case "4":
+    client.publish("roomba/status", "Waiting");
+    break;
+  case "3":
+    client.publish("roomba/status", "Trickle Charging");
+    break;
+  case "2":
+    client.publish("roomba/status", "Full Charging");
+    break;
+  case "1":
+    client.publish("roomba/status", "Reconditioning Charging");
+    break;
+  case "0":
+    client.publish("roomba/status", "Not charging");
+    break;
+  }
 }
 
 void awake()
 {
+  client.publish("roomba/status", "Wake up");
   digitalWrite(noSleepPin, HIGH);
   delay(1000);
   digitalWrite(noSleepPin, LOW);
@@ -177,7 +212,6 @@ void awake()
   delay(1000);
   digitalWrite(noSleepPin, LOW);
 }
-
 
 void setup()
 {
