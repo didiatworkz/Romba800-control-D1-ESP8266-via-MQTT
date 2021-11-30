@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <Roomba.h>
+#include <ArduinoOTA.h>
 
 
 //USER CONFIGURED SECTION START//
@@ -12,6 +13,8 @@ const int mqtt_port = 1883;
 const char *mqtt_user = "<YOUR MQTT USERNAME>";
 const char *mqtt_pass = "<YOUR MQTT PASSWORD>";
 const char *mqtt_client_name = "Roomba"; // Client connections can't have the same connection name
+const char *arduino_ota_password_md5 = "<YOUR MD5 HASH PASSWORD>";
+const int arduino_ota_port = 8266;
 //USER CONFIGURED SECTION END//
 
 
@@ -118,7 +121,7 @@ void startCleaning()
   awake();
   roomba.start();
   delay(50);
-  roomba.saveMode();
+  roomba.safeMode();
   delay(50);
   roomba.cover();
   client.publish("roomba/status", "Cleaning");
@@ -137,7 +140,7 @@ void goHome()
   awake();
   roomba.start();
   delay(50);
-  roomba.saveMode();
+  roomba.safeMode();
   delay(50);
   roomba.coverAndDock();
   client.publish("roomba/status", "Returning");
@@ -178,26 +181,29 @@ void sendInfoRoomba()
   String temp_str = String(battery_Voltage);
   temp_str.toCharArray(battery_Current_mAh_send, temp_str.length() + 1); //packaging up the data to publish to mqtt
   client.publish("roomba/charging", battery_Current_mAh_send);
-  switch(battery_Current_mAh_send) 
+  if(battery_Current_mAh_send == "5") 
   {
-  case "5":
     client.publish("roomba/status", "Charging Fault Condition");
-    break;
-  case "4":
+  }
+  else if(battery_Current_mAh_send == "4") 
+  {
     client.publish("roomba/status", "Waiting");
-    break;
-  case "3":
-    client.publish("roomba/status", "Trickle Charging");
-    break;
-  case "2":
-    client.publish("roomba/status", "Full Charging");
-    break;
-  case "1":
-    client.publish("roomba/status", "Reconditioning Charging");
-    break;
-  case "0":
+  }
+  else if(battery_Current_mAh_send == "3") 
+  {
+    client.publish("roomba/status", "Charging");
+  }
+  else if(battery_Current_mAh_send == "2") 
+  {
+    client.publish("roomba/status", "Charging complete");
+  }
+  else if(battery_Current_mAh_send == "1") 
+  {  
+    client.publish("roomba/status", "Charging");
+  }
+  else 
+  {
     client.publish("roomba/status", "Not charging");
-    break;
   }
 }
 
@@ -217,6 +223,41 @@ void setup()
 {
   pinMode(noSleepPin, OUTPUT);
   digitalWrite(noSleepPin, HIGH);
+  ArduinoOTA.setPort(arduino_ota_port);
+  ArduinoOTA.setHostname(mqtt_client_name);
+  ArduinoOTA.setPasswordHash(arduino_ota_password_md5);
+  ArduinoOTA.onStart([]() {
+    String type;
+    if (ArduinoOTA.getCommand() == U_FLASH) {
+      type = "sketch";
+    } else { // U_FS
+      type = "filesystem";
+    }
+
+    // NOTE: if updating FS this would be the place to unmount FS using FS.end()
+    Serial.println("Start updating " + type);
+  });
+  ArduinoOTA.onEnd([]() {
+    Serial.println("\nEnd");
+  });
+  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+  });
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) {
+      Serial.println("Auth Failed");
+    } else if (error == OTA_BEGIN_ERROR) {
+      Serial.println("Begin Failed");
+    } else if (error == OTA_CONNECT_ERROR) {
+      Serial.println("Connect Failed");
+    } else if (error == OTA_RECEIVE_ERROR) {
+      Serial.println("Receive Failed");
+    } else if (error == OTA_END_ERROR) {
+      Serial.println("End Failed");
+    }
+  });
+  ArduinoOTA.begin();
   Serial.begin(115200);
   Serial.write(129);
   delay(50);
@@ -228,7 +269,8 @@ void setup()
 }
 
 void loop()
-{
+{ 
+  ArduinoOTA.handle();
   delay(1000);
   if (!client.connected())
   {
