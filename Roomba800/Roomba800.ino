@@ -54,7 +54,7 @@ void reconnect()
     if(retries < 50)
     {
       // Attempt to connect
-      if (client.connect(mqtt_client_name, mqtt_user, mqtt_pass, "roomba/status", 0, 0, "Dead Somewhere"))
+      if (client.connect(mqtt_client_name, mqtt_user, mqtt_pass, "roomba/status", 0, 0, "Ready"))
       {
         // Once connected, publish an announcement...
         if(boot == false)
@@ -189,27 +189,27 @@ void sendInfoRoomba()
   String temp_str = String(battery_Voltage);
   temp_str.toCharArray(battery_Current_mAh_send, temp_str.length() + 1); //packaging up the data to publish to mqtt
   client.publish("roomba/charging", battery_Current_mAh_send);
-  if(battery_Current_mAh_send == "5") 
+  if(atoi(battery_Current_mAh_send) == 5) 
   {
     client.publish("roomba/status", "Charging Fault Condition");
   }
-  else if(battery_Current_mAh_send == "4") 
+  else if(atoi(battery_Current_mAh_send) == 4) 
   {
     client.publish("roomba/status", "Waiting");
   }
-  else if(battery_Current_mAh_send == "3") 
+  else if(atoi(battery_Current_mAh_send) == 3) 
   {
     client.publish("roomba/status", "Charging");
   }
-  else if(battery_Current_mAh_send == "2") 
+  else if(atoi(battery_Current_mAh_send) == 2) 
   {
-    client.publish("roomba/status", "Charging complete");
+    client.publish("roomba/status", "Charging");
   }
-  else if(battery_Current_mAh_send == "1") 
+  else if(atoi(battery_Current_mAh_send) == 1) 
   {  
     client.publish("roomba/status", "Charging");
   }
-  else if(battery_Current_mAh_send == "0") 
+  else if(atoi(battery_Current_mAh_send) == 0) 
   {
     client.publish("roomba/status", "Not charging");
   }
