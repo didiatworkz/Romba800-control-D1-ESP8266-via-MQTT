@@ -13,8 +13,6 @@ const int mqtt_port = 1883;
 const char *mqtt_user = "<YOUR MQTT USERNAME>";
 const char *mqtt_pass = "<YOUR MQTT PASSWORD>";
 const char *mqtt_client_name = "Roomba"; // Client connections can't have the same connection name
-const char *arduino_ota_password_md5 = "<YOUR MD5 HASH PASSWORD>";
-const int arduino_ota_port = 8266;
 //USER CONFIGURED SECTION END//
 
 
@@ -39,6 +37,7 @@ uint8_t tempBuf[10];
 
 void setup_wifi()
 {
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
   {
