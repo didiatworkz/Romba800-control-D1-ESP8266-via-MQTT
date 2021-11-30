@@ -107,9 +107,9 @@ void callback(char* topic, byte* payload, unsigned int length)
     {
       sendInfoRoomba();
     }
-    if (newPayload == "find")
+    if (newPayload == "ping")
     {
-      find();
+      ping();
     }
 
   }
@@ -146,13 +146,22 @@ void goHome()
   client.publish("roomba/status", "Returning");
 }
 
-void find()
+void ping()
 {
-  uint8_t song[] = {62, 12, 66, 12, 69, 12, 74, 36};
+  uint8_t song[] = {64, 32, 64, 32, 64, 32, 60, 16, 67, 12, 64, 32, 60, 16, 67, 12, 64, 64, 71, 32, 71, 32, 71, 32, 72, 16, 67, 12, 64, 32, 60, 16, 67, 12, 64, 64};
+  int song_size = sizeof(song) / 2;
   awake();
-  roomba.start();
-  roomba.song(10, song, sizeof(song));
-  roomba.playSong(10); 
+  Serial.write(128);
+  Serial.write(131);
+  Serial.write(140);
+  Serial.write(0);
+  Serial.write(song_size);
+  for (int i = 0; i < sizeof(song); i++) {
+    Serial.write(song[i]);
+  }
+  Serial.write(141);
+  Serial.write(0);
+  client.publish("roomba/status", "Pong"); 
 }
 
 void sendInfoRoomba()
@@ -223,9 +232,13 @@ void setup()
 {
   pinMode(noSleepPin, OUTPUT);
   digitalWrite(noSleepPin, HIGH);
-  ArduinoOTA.setPort(arduino_ota_port);
+  Serial.begin(115200);
+  Serial.write(129);
+  delay(50);
+  Serial.write(11);
+  delay(50);
+  setup_wifi();
   ArduinoOTA.setHostname(mqtt_client_name);
-  ArduinoOTA.setPasswordHash(arduino_ota_password_md5);
   ArduinoOTA.onStart([]() {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH) {
@@ -258,12 +271,6 @@ void setup()
     }
   });
   ArduinoOTA.begin();
-  Serial.begin(115200);
-  Serial.write(129);
-  delay(50);
-  Serial.write(11);
-  delay(50);
-  setup_wifi();
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
