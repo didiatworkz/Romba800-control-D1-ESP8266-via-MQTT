@@ -33,9 +33,14 @@ https://git.io/JMWYH
 3) Add this URL `https://arduino.esp8266.com/stable/package_esp8266com_index.json` to *Additional Boards Manager URLs:*
 ![add_boards](https://github.com/didiatworkz/Romba800-control-D1-ESP8266-via-MQTT/raw/master/.github/add_boards.png)
 4) Press *OK*
+5) Restart arduino IDE
 
 #### Choose the D1mini board
-1) Choose *Tools+ -> *Boards* -> *ESP8266 Boards (..)* -> *LOLIN(WEMOS) D1 R2 & mini*
+1) Choose *Tools* -> *Boards* -> *Board Manager*
+2) Ssearch for *ESP8266*
+3) Install Boards from ESP8266 Community
+4) Close Board Manager
+5) Choose *Tools* -> *Boards* -> *ESP8266 Boards (..)* -> *LOLIN(WEMOS) D1 R2 & mini*
 
 ![choose_boards](https://github.com/didiatworkz/Romba800-control-D1-ESP8266-via-MQTT/raw/master/.github/choose_board.png)
 
