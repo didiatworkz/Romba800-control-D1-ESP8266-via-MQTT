@@ -1,0 +1,140 @@
+esphome:
+  name: roomba
+  platform: ESP8266
+  board: d1_mini
+
+  includes:
+    - ESPHomeRoombaComponent.h
+  libraries:
+    - EspSoftwareSerial
+    - Roomba=https://github.com/davidecavestro/Roomba.git
+  
+substitutions:
+  name: "roomba"
+  # BRC pin, RX pin, TX pin, polling interval in milliseconds
+  # Pin 3 is labeled rx on the wemos d1 mini, 1 is labeled TX We don't use the hardware UART but we're using its pins!
+  init: 'RoombaComponent::instance(D8, 3, 1, Roomba::Baud115200, 15000);'
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret API_password
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Roomba Fallback Hotspot"
+    password: !secret fallback_portal_password
+
+captive_portal:
+
+#Status LED on the built in LED in the wemos d1 mini
+status_led:
+  pin:
+      number: D4
+      inverted: true
+
+custom_component:
+  - lambda: |-
+      auto r = ${init}
+      return {r};
+sensor:
+ - platform: custom
+   lambda: |-
+      auto r = ${init}
+      return {r->distanceSensor, r->voltageSensor, r->currentSensor, r->chargeSensor, r->capacitySensor, r->batteryPercentSensor};
+   sensors:
+     - name: "${name} Abstand"
+       unit_of_measurement: "mm"
+       accuracy_decimals: 0
+     - name: "${name} Spannung"
+       unit_of_measurement: "V"
+       accuracy_decimals: 2
+       filters:
+        - median:
+            window_size: 7
+            send_every: 4
+            send_first_at: 3
+        - multiply: 0.001
+     - name: "${name} Strom"
+       unit_of_measurement: "mA"
+       accuracy_decimals: 0
+       filters:
+        - median:
+            window_size: 7
+            send_every: 4
+            send_first_at: 3
+     - name: "${name} Ladung"
+       unit_of_measurement: "mAh"
+       accuracy_decimals: 0
+       filters:
+        - median:
+            window_size: 7
+            send_every: 4
+            send_first_at: 3
+     - name: "${name} Kapazität"
+       unit_of_measurement: "mAh"
+       accuracy_decimals: 0
+       filters:
+        - median:
+            window_size: 7
+            send_every: 4
+            send_first_at: 3
+     - name: "${name} Batterie"
+       unit_of_measurement: "%"
+       accuracy_decimals: 0
+       filters:
+        - median:
+            window_size: 7
+            send_every: 4
+            send_first_at: 3
+text_sensor:
+  - platform: custom
+    lambda: |-
+      auto r = ${init}
+      return {r->activitySensor};
+      
+    text_sensors:
+      - name: "${name} Status"
+
+button:
+  - platform: template
+    name: "Suchen"
+    on_press:
+      lambda: |-
+        auto r = ${init}
+        r->on_command("locate");
+  - platform: template
+    name: "Start/Stop"
+    on_press:
+      lambda: |-
+        auto r = ${init}
+        r->on_command("start");
+  - platform: template
+    name: "Dock"
+    on_press:
+      lambda: |-
+        auto r = ${init}
+        r->on_command("dock");
+
+#I have no idea what this button was supposed to do. I have it hooked to the BRC pin on my 530
+#some people may be soldering this to the contacts of their roomba's clean button to wake it from sleep?
+switch:
+  - platform: gpio
+    id: "roomba_button"
+    name: "Roomba virtual button"
+    pin: D8
+    on_turn_on:
+    - logger.log: "Roomba virtual button pressed!"
+#    - delay: 1s
+    - delay: !lambda "return 400;"
+    - switch.turn_off: roomba_button
