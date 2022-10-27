@@ -1,58 +1,97 @@
-# Required: https://github.com/custom-cards/button-card
-type: vertical-stack
+type: custom:stack-in-card
+keep:
+  margin: false
+  box_shadow: false
+  background: false
 cards:
-  - type: custom:button-card
-    name: Roomba
-    color_type: card
-    entity: binary_sensor.roomba_charching
-    tap_action:
-      action: call-service
-      service: mqtt.publish
-      service_data:
-        topic: roomba/commands
-        payload: status
-    state:
-      - value: 'on'
-        name: Roomba
-        color: rgb(255,217,0)
-        styles:
-          icon:
-            - display: none
-      - value: 'off'
-        name: Roomba
-        color: rgb(25,25,25)
-        styles:
-          icon:
-            - display: none
+  - type: custom:mushroom-template-card
+    primary: Roomba Steuerung
+    secondary: 'Status: {{ states(''sensor.roomba_status'') }}'
+    icon: mdi:robot-vacuum
+    icon_color: '#9ba5a8'
+  - type: conditional
+    conditions:
+      - entity: sensor.roomba_status
+        state_not: Laden
+    card:
+      entities:
+        - color: '#00c6d7'
+          entity: sensor.roomba_batterie
+          name: Cyan
+      positions:
+        icon: 'off'
+        name: 'off'
+      max: 100
+      min: 0
+      padding: 2px
+      type: custom:bar-card
+      unit_of_measurement: '%'
+      title: null
+      severity:
+        - color: '#ff3c41'
+          from: 0
+          to: 10
+        - color: '#ffb900'
+          from: 11
+          to: 35
+        - color: '#3be8b0'
+          from: 36
+          to: 100
+      style: |-
+        bar-card-value {
+          margin-right: auto;
+          font-size: 13px;
+          font-weight: bold;
+          text-shadow: 1px 2px #0003;
+          color: #ffffff
+        }
   - type: horizontal-stack
     cards:
-      - type: custom:button-card
-        name: Start
-        color: rgb(52,191,73)
-        icon: mdi:robot-vacuum
-        tap_action:
-          action: call-service
-          service: mqtt.publish
-          service_data:
-            topic: roomba/commands
-            payload: start
-        hold_action:
-          action: call-service
-          service: mqtt.publish
-          service_data:
-            topic: roomba/commands
-            payload: stop
-      - type: custom:button-card
-        name: Home
-        color: rgb(128, 128, 128)
+      - type: custom:mushroom-entity-card
+        entity: button.dock
         icon: mdi:home
+        icon_color: '#00acee'
+        secondary_info: none
         tap_action:
           action: call-service
-          service: mqtt.publish
-          service_data:
-            topic: roomba/commands
-            payload: home
-  - type: entities
-    entities:
-      - entity: sensor.roomba_battery
-      - entity: sensor.roomba_status
+          service: script.1660164062078
+          data: {}
+        style: |
+          ha-card {
+            border: solid 1px rgba(100,100,100,0.1);
+            border-radius: 10px !important;
+            box-shadow: var( --ha-card-box-shadow, 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) ) !important;
+            margin: 0px 10px;
+          }
+      - type: custom:mushroom-entity-card
+        entity: button.suchen
+        icon: mdi:map-marker
+        icon_color: '#ffcc2f'
+        secondary_info: none
+        tap_action:
+          action: call-service
+          service: script.1660164080061
+          data: {}
+        style: |
+          ha-card {
+            border: solid 1px rgba(100,100,100,0.1);
+            border-radius: 10px !important;
+            box-shadow: var( --ha-card-box-shadow, 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) ) !important;
+            margin: 0px 10px;
+          }
+  - type: custom:mushroom-entity-card
+    entity: button.start_stop
+    icon: mdi:play
+    icon_color: '#2baf2b'
+    secondary_info: none
+    tap_action:
+      action: call-service
+      service: script.script_roomba_start_stop
+      data: {}
+    style: |
+      ha-card {
+        border: solid 1px rgba(100,100,100,0.1);
+        border-radius: 10px !important;
+        box-shadow: var( --ha-card-box-shadow, 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) ) !important;
+        margin: 10px;
+      }
